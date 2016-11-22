@@ -1,8 +1,14 @@
+/**
+ * TwoSortsPanel --- Program to show insertion and selection sort
+ * @author       David Ye Luo, Kenta Medina
+ * @version      1.0
+ * @since        2016-11-22
+ */
 import javax.swing.*;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+   
 public class TwoSortsPanel extends JPanel
 {
 	private Integer[] selectionNumbers;
@@ -12,6 +18,14 @@ public class TwoSortsPanel extends JPanel
 	private JButton button;
 	private int step;  // record for button press
 	
+	// Useful variable used to plot images
+	private final int width = 10;  // width of the bars
+	private final int center = 250;  // location at half of the screen
+	private final int gap = 20;  // the gap between bars
+	
+	//-----------------------------------------------------------
+	// Default Constructor
+	//-----------------------------------------------------------
 	public TwoSortsPanel()
 	{
 		button = new JButton("Next");
@@ -47,14 +61,12 @@ public class TwoSortsPanel extends JPanel
 		setPreferredSize(new Dimension(500,500));
 	}
 
-
+	//-----------------------------------------------------------
+	// Draws the Panel
+	//-----------------------------------------------------------
 	public void paintComponent(Graphics g)
 	{
 		super.paintComponent(g);
-
-		final int width = 10;  // width of the bars
-		final int center = 250;  // location at half of the screen
-		final int gap = 20;  // gap between bars
 		
 		// selection sort
 		int start = 150;  // Where the first bar 
@@ -62,7 +74,14 @@ public class TwoSortsPanel extends JPanel
 		g.drawString("Selection Sort", center/2+80, 60);
 		for(int i=0; i<selectionNumbers.length; i++)
 		{
-			g.setColor(Color.red);
+			if(isSorted(selectionNumbers))
+			{
+				g.setColor(Color.gray);
+			}
+			else
+			{
+				g.setColor(Color.red);
+			}
 			g.fillRect(start, 
 					center/2+50 - selectionNumbers[i]*10, // reflects the bars to face up
 					width, 
@@ -78,7 +97,14 @@ public class TwoSortsPanel extends JPanel
 		g.drawString("Insertion Sort", center/2+80, 240);
 		for(int i=0; i<insertionNumbers.length;i++)
 		{
-			g.setColor(Color.green);
+			if(isSorted(insertionNumbers))
+			{
+				g.setColor(Color.gray);
+			}
+			else
+			{
+				g.setColor(Color.green);
+			}
 			g.fillRect(start,
 					center+100 - insertionNumbers[i]*10,  // reflects the bars to face up
 					width, 
@@ -94,6 +120,9 @@ public class TwoSortsPanel extends JPanel
 		
 	}
 	
+	//-----------------------------------------------------------
+	// Perform selectionSort depending on what step it is
+	//-----------------------------------------------------------
 	public void selectionSort()
 	{
 		if(step < selectionNumbers.length)
@@ -116,15 +145,18 @@ public class TwoSortsPanel extends JPanel
 		}
 	}
 	
+	//-----------------------------------------------------------
+	// Perform insertion sort depending on what step it is
+	//-----------------------------------------------------------
 	public void insertionSort()
 	{
-		for(int i=1; i<step+1;i++)
+		for(int i=1; i<step+2;i++)
 		{
 			if(step < insertionNumbers.length)
 			{
 				Integer key = insertionNumbers[i];  // the number used to compare to
 				int position = i;
-				// shift the numbers to the right place
+				// shift the numbers
 				while(position > 0 
 						&& key.compareTo(insertionNumbers[position-1]) < 0) // compare the key to 
 				{
@@ -135,9 +167,35 @@ public class TwoSortsPanel extends JPanel
 			}
 		}
 	}
+	
+	//-----------------------------------------------------------
+	// Check if the list is sorted
+	//-----------------------------------------------------------
+	public boolean isSorted(Integer[] list)
+	{
+		// return true if list is ascending order
+		// return false for unsorted
+		for(int i=0;i<list.length-1;i++)
+		{
+			if(list[i] > list[i+1])
+			{
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	/**
+	 * NextButton --- Program to sort
+	 * @author       David Ye Luo, Kenta Medina
+	 * @version      1.0
+	 * @since        2016-11-22
+	 */
 	private class NextButton implements ActionListener
 	{
-
+		//-----------------------------------------------------------
+		// Listen for button press
+		//-----------------------------------------------------------
 		public void actionPerformed(ActionEvent e) 
 		{
 			selectionSort();
