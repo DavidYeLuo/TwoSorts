@@ -152,7 +152,7 @@ public class TwoSortsPanel extends JPanel
 	{
 		for(int i=1; i<step+2;i++)
 		{
-			if(step < insertionNumbers.length)
+			if(i < insertionNumbers.length)
 			{
 				Integer key = insertionNumbers[i];  // the number used to compare to
 				int position = i;
